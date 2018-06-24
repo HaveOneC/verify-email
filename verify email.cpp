@@ -148,16 +148,15 @@ CheckMail::~CheckMail()
 }
 
 void CheckMail::initialization() {
-	//对Winsock服务初始化
+
 	if (WSAStartup(WSWENS, &wsadata) != 0)
 		cout << "startup failed" << endl;
 
-	//创建套接字，指定端口号
 	s = socket(PF_INET, SOCK_STREAM, 0);
 	memset(&sin, 0, sizeof(sin));
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(25);
-	//获取服务器IP地址
+
 	setSmtpIP();
 	hostent* hptr = gethostbyname(smtpIP.c_str());
 	memcpy(&sin.sin_addr.S_un.S_addr, hptr->h_addr_list[0], hptr->h_length);
@@ -169,7 +168,7 @@ void CheckMail::initialization() {
 	cout << endl;
 }
 
-//将服务器回应的信息打印
+
 void CheckMail::response(SOCKET sock, char buff[])
 {
 	int len = recv(sock, buff, MAXLINE, 0);
@@ -197,7 +196,7 @@ void CheckMail::response(SOCKET sock, char buff[], int flag)
 }
 
 void CheckMail::connectSMTP() {
-	//建立与服务器的连接
+
 	if (connect(s, (sockaddr*)&sin, sizeof(sin)))
 	{
 		cout << "connect failed!" << endl;
@@ -308,7 +307,7 @@ int main(int argc, char **argv)
 	}
 
 	checkMail.quit();
-	in.close();             //关闭文件输入流 
+	in.close();             
 	getchar();
 	return 0;
 }
